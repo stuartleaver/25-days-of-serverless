@@ -1,0 +1,42 @@
+@model List<Letter>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center">
+    <h1 class="display-4">The Naughty or Nice List</h1>
+    <hr />
+    <img src="~/images/naughty-or-nice-list.jpg" />
+    <br />
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">From</th>
+                <th scope="col">Message</th>
+                <th scope="col">Sentiment</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null)
+        {
+            foreach (var letter in Model)
+            {
+                <tr>
+                    <th scope="row">@letter.Who</th>
+                    <th scope="row">@letter.TranslatedMessage (@letter.Message)</th>
+                    <td>@if (@letter.Sentiment >= 0.70)
+                        {
+                            <img src="~/images/nice-tag.png" alt="Nice">
+                        }
+                        else
+                        {
+                            <img src="~/images/naughty-tag.png" alt="Naughty">
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
