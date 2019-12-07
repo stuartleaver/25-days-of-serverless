@@ -1,28 +1,29 @@
-# Challenge 6: Durable Pattern
+# Challenge 7: API Endpoint - Picture Challenge
 
-![St. Nicholas challenge](https://res.cloudinary.com/jen-looper/image/upload/v1575132446/images/challenge-6_qpqesc.jpg)
+![A Virtual Bonfire](https://res.cloudinary.com/jen-looper/image/upload/v1575132446/images/challenge-7_kzcrtm.jpg)
 
 ## Solution
 
-New things were learnt today. Never experimented with **Slack Apps** or **Durable Functions** before.
+The problem calls for a web API that takes text as an input and returns an image found on **[UNSPLASH Picture API](https://unsplash.com/)** or another image platform.
 
-Resources used:
+1 - Having never used Unsplash before, I choose that option and signed up.
 
-| Resource | Description     |
-| :------------- | :------------- |
-| [**Build a Slash Command**](https://api.slack.com/tutorials/slash-block-kit)                                                | Learn how to build a `/slash` command for Slack                 |
-| [**Slack Incoming Webhooks**](https://api.slack.com/messaging/webhooks)                                                     | Learn what incoming message webhooks are and how to use them    |
-| [**Stateful Serverless**](https://dev.to/azure/stateful-serverless-with-durable-functions-2jff)                             | Learn how to create schedules and timers with Durable Functions |
-| [**Durable Contraints**](https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-code-constraints) | Beware of non-deterministic functions                           |
-| [**Chrono**](https://github.com/wanasit/chrono) | Convert natural English language to date/time |
-| [**Moment Timezone**](https://github.com/moment/moment-timezone) | Handle timezones correctly from JS dates |
+2 - To use the API, it was necessary to create an app to gain the required keys.
 
-![Santa's Scheduler screenshot](images/slack.png)
+3 - Once I had the keys, I started about writing the function. While it would have been easy to use the Http client, I noticed that there was a [C# wrapper (Unofficial)](https://github.com/rootasjey/unsplasharp) available. So rather than reinventing the wheel, I made use of it.
 
-## Happy St. Nicholas Day!
+4 - As above, the problem called for an image to be returned. However, it was noticed that if you used the same seach query, it always returned the same image. So the code was changed to return 10 images from Unsplash but to then pick a random image from those 10.
 
-Here in the Styrian region of Austria, it's said that today is the day that St. Nicholas goes around handing out presents, while his evil counterpart Krampus whips those who have been naughty. These days, that mostly results in people giving each other bundles of _ruten_, bundles of birch twigs that have been painted gold.
+5 - The Api then returns a JSON string containing the Id, Url and alt description so that it could be used in a UI.
 
-You're supposed to hang up these ruten year-round to remind children to be good, but of course today's children don't spend much more time in online chats than sitting in front of the fireplace. Let's write a reminder tool using serverless tech that lets Austrian children set reminders to do good deeds in their favorite chat app!
+6 - The Azure Function was then deployed and can be tested (while I have the resource running in Azure) at https://unsplashimagesearch.azurewebsites.net/api/searchunsplash?query= adding your search word on at the end.
 
-Build a chat integration for your favorite chat service (e.g. Discord or Slack) that lets you schedule tasks using natural language (e.g. `/schedule volunteer at the senior citizens' center tomorrow at 11:00`). You should be able to get a confirmation that your event has been scheduled, and then get a notification at the correct time.
+![Sample query](images/postman.png)
+
+## The Problem
+
+December 7 marks the first day of the official Christmas season in Guatemala. Everybody is scrambling to get ready for the big _la quema del diablo_ (burning of the devil) tonight — at 6pm sharp, everyone will start a bonfire to burn rubbish and items they don't need to cleanse their homes of evil.
+
+Here in Guatemala City, our friend Miguel is concerned about the environmental impact! The past few years, people have been burning a lot of rubber and plastic that makes the air dirty. Some places are switching to burning paper piñatas of the devil, but Miguel still wants to let people metaphorically cleanse their houses of specific items they don't want.
+
+Let's help Miguel by building a web API that lets his neighbors search for images of things they want to get rid of. Build an application (e.g. a cloud function with a single endpoint) that takes text as an input and returns an image found on unsplash or another image platform.
