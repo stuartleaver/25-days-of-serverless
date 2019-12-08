@@ -1,0 +1,23 @@
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "type": "cosmosDBTrigger",
+      "name": "documents",
+      "direction": "in",
+      "leaseCollectionName": "leases",
+      "connectionStringSetting": "AzureCosmosDBConnectionString",
+      "databaseName": "santas-rds-db",
+      "collectionName": "status",
+      "createLeaseCollectionIfNotExists": "true",
+      "feedPollDelay": 500
+    },
+    {
+      "type": "signalR",
+      "name": "signalRMessages",
+      "connectionString": "AzureSignalRConnectionString",
+      "hubName": "status",
+      "direction": "out"
+    }
+  ]
+}
