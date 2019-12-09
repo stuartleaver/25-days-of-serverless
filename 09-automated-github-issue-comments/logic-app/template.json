@@ -1,0 +1,676 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_AutomatedGitHubIssueComments_name": {
+            "defaultValue": "AutomatedGitHubIssueComments",
+            "type": "String"
+        },
+        "connections_keyvault_externalid": {
+            "defaultValue": "/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/resourceGroups/25DaysOfServerless_rg/providers/Microsoft.Web/connections/keyvault",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_AutomatedGitHubIssueComments_name')]",
+            "location": "uksouth",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "properties": {
+                                        "action": {
+                                            "type": "string"
+                                        },
+                                        "issue": {
+                                            "properties": {
+                                                "assignee": {},
+                                                "assignees": {
+                                                    "type": "array"
+                                                },
+                                                "author_association": {
+                                                    "type": "string"
+                                                },
+                                                "body": {
+                                                    "type": "string"
+                                                },
+                                                "closed_at": {},
+                                                "comments": {
+                                                    "type": "integer"
+                                                },
+                                                "comments_url": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "events_url": {
+                                                    "type": "string"
+                                                },
+                                                "html_url": {
+                                                    "type": "string"
+                                                },
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "labels": {
+                                                    "type": "array"
+                                                },
+                                                "labels_url": {
+                                                    "type": "string"
+                                                },
+                                                "locked": {
+                                                    "type": "boolean"
+                                                },
+                                                "milestone": {},
+                                                "node_id": {
+                                                    "type": "string"
+                                                },
+                                                "number": {
+                                                    "type": "integer"
+                                                },
+                                                "repository_url": {
+                                                    "type": "string"
+                                                },
+                                                "state": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                },
+                                                "user": {
+                                                    "properties": {
+                                                        "avatar_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "events_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "followers_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "following_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "gists_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "gravatar_id": {
+                                                            "type": "string"
+                                                        },
+                                                        "html_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "login": {
+                                                            "type": "string"
+                                                        },
+                                                        "node_id": {
+                                                            "type": "string"
+                                                        },
+                                                        "organizations_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "received_events_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "repos_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "site_admin": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "starred_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "subscriptions_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "type": "string"
+                                                        },
+                                                        "url": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "repository": {
+                                            "properties": {
+                                                "archive_url": {
+                                                    "type": "string"
+                                                },
+                                                "archived": {
+                                                    "type": "boolean"
+                                                },
+                                                "assignees_url": {
+                                                    "type": "string"
+                                                },
+                                                "blobs_url": {
+                                                    "type": "string"
+                                                },
+                                                "branches_url": {
+                                                    "type": "string"
+                                                },
+                                                "clone_url": {
+                                                    "type": "string"
+                                                },
+                                                "collaborators_url": {
+                                                    "type": "string"
+                                                },
+                                                "comments_url": {
+                                                    "type": "string"
+                                                },
+                                                "commits_url": {
+                                                    "type": "string"
+                                                },
+                                                "compare_url": {
+                                                    "type": "string"
+                                                },
+                                                "contents_url": {
+                                                    "type": "string"
+                                                },
+                                                "contributors_url": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "default_branch": {
+                                                    "type": "string"
+                                                },
+                                                "deployments_url": {
+                                                    "type": "string"
+                                                },
+                                                "description": {},
+                                                "disabled": {
+                                                    "type": "boolean"
+                                                },
+                                                "downloads_url": {
+                                                    "type": "string"
+                                                },
+                                                "events_url": {
+                                                    "type": "string"
+                                                },
+                                                "fork": {
+                                                    "type": "boolean"
+                                                },
+                                                "forks": {
+                                                    "type": "integer"
+                                                },
+                                                "forks_count": {
+                                                    "type": "integer"
+                                                },
+                                                "forks_url": {
+                                                    "type": "string"
+                                                },
+                                                "full_name": {
+                                                    "type": "string"
+                                                },
+                                                "git_commits_url": {
+                                                    "type": "string"
+                                                },
+                                                "git_refs_url": {
+                                                    "type": "string"
+                                                },
+                                                "git_tags_url": {
+                                                    "type": "string"
+                                                },
+                                                "git_url": {
+                                                    "type": "string"
+                                                },
+                                                "has_downloads": {
+                                                    "type": "boolean"
+                                                },
+                                                "has_issues": {
+                                                    "type": "boolean"
+                                                },
+                                                "has_pages": {
+                                                    "type": "boolean"
+                                                },
+                                                "has_projects": {
+                                                    "type": "boolean"
+                                                },
+                                                "has_wiki": {
+                                                    "type": "boolean"
+                                                },
+                                                "homepage": {},
+                                                "hooks_url": {
+                                                    "type": "string"
+                                                },
+                                                "html_url": {
+                                                    "type": "string"
+                                                },
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "issue_comment_url": {
+                                                    "type": "string"
+                                                },
+                                                "issue_events_url": {
+                                                    "type": "string"
+                                                },
+                                                "issues_url": {
+                                                    "type": "string"
+                                                },
+                                                "keys_url": {
+                                                    "type": "string"
+                                                },
+                                                "labels_url": {
+                                                    "type": "string"
+                                                },
+                                                "language": {},
+                                                "languages_url": {
+                                                    "type": "string"
+                                                },
+                                                "license": {},
+                                                "merges_url": {
+                                                    "type": "string"
+                                                },
+                                                "milestones_url": {
+                                                    "type": "string"
+                                                },
+                                                "mirror_url": {},
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "node_id": {
+                                                    "type": "string"
+                                                },
+                                                "notifications_url": {
+                                                    "type": "string"
+                                                },
+                                                "open_issues": {
+                                                    "type": "integer"
+                                                },
+                                                "open_issues_count": {
+                                                    "type": "integer"
+                                                },
+                                                "owner": {
+                                                    "properties": {
+                                                        "avatar_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "events_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "followers_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "following_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "gists_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "gravatar_id": {
+                                                            "type": "string"
+                                                        },
+                                                        "html_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "login": {
+                                                            "type": "string"
+                                                        },
+                                                        "node_id": {
+                                                            "type": "string"
+                                                        },
+                                                        "organizations_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "received_events_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "repos_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "site_admin": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "starred_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "subscriptions_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "type": "string"
+                                                        },
+                                                        "url": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "private": {
+                                                    "type": "boolean"
+                                                },
+                                                "pulls_url": {
+                                                    "type": "string"
+                                                },
+                                                "pushed_at": {
+                                                    "type": "string"
+                                                },
+                                                "releases_url": {
+                                                    "type": "string"
+                                                },
+                                                "size": {
+                                                    "type": "integer"
+                                                },
+                                                "ssh_url": {
+                                                    "type": "string"
+                                                },
+                                                "stargazers_count": {
+                                                    "type": "integer"
+                                                },
+                                                "stargazers_url": {
+                                                    "type": "string"
+                                                },
+                                                "statuses_url": {
+                                                    "type": "string"
+                                                },
+                                                "subscribers_url": {
+                                                    "type": "string"
+                                                },
+                                                "subscription_url": {
+                                                    "type": "string"
+                                                },
+                                                "svn_url": {
+                                                    "type": "string"
+                                                },
+                                                "tags_url": {
+                                                    "type": "string"
+                                                },
+                                                "teams_url": {
+                                                    "type": "string"
+                                                },
+                                                "trees_url": {
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                },
+                                                "watchers": {
+                                                    "type": "integer"
+                                                },
+                                                "watchers_count": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "sender": {
+                                            "properties": {
+                                                "avatar_url": {
+                                                    "type": "string"
+                                                },
+                                                "events_url": {
+                                                    "type": "string"
+                                                },
+                                                "followers_url": {
+                                                    "type": "string"
+                                                },
+                                                "following_url": {
+                                                    "type": "string"
+                                                },
+                                                "gists_url": {
+                                                    "type": "string"
+                                                },
+                                                "gravatar_id": {
+                                                    "type": "string"
+                                                },
+                                                "html_url": {
+                                                    "type": "string"
+                                                },
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "login": {
+                                                    "type": "string"
+                                                },
+                                                "node_id": {
+                                                    "type": "string"
+                                                },
+                                                "organizations_url": {
+                                                    "type": "string"
+                                                },
+                                                "received_events_url": {
+                                                    "type": "string"
+                                                },
+                                                "repos_url": {
+                                                    "type": "string"
+                                                },
+                                                "site_admin": {
+                                                    "type": "boolean"
+                                                },
+                                                "starred_url": {
+                                                    "type": "string"
+                                                },
+                                                "subscriptions_url": {
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "type": "string"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Compose_the_Comment": {
+                            "runAfter": {
+                                "Get_GitHubToken": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Compose",
+                            "inputs": {
+                                "body": "Thank you @{variables('Ampersand')}@{variables('Login')} from your friendly **Azure Logic App** for submitting this issue. We will take a look and respond in due course. Have a Happy Holiday season."
+                            }
+                        },
+                        "Get_GitHubToken": {
+                            "runAfter": {
+                                "Initialize_the_Ampersand_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['keyvault']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/secrets/@{encodeURIComponent('GitHubToken')}/value"
+                            },
+                            "runtimeConfiguration": {
+                                "secureData": {
+                                    "properties": [
+                                        "inputs",
+                                        "outputs"
+                                    ]
+                                }
+                            }
+                        },
+                        "GitHub_Issue_Action": {
+                            "actions": {
+                                "HTTP": {
+                                    "runAfter": {},
+                                    "type": "Http",
+                                    "inputs": {
+                                        "body": "@outputs('Compose_the_Comment')",
+                                        "headers": {
+                                            "Authorization": "Token @{body('Get_GitHubToken')?['value']}",
+                                            "User-Agent": "GitHubIssueTrigger-stuartleaver"
+                                        },
+                                        "method": "POST",
+                                        "uri": "@variables('CommentsUrl')"
+                                    }
+                                },
+                                "Response": {
+                                    "runAfter": {
+                                        "HTTP": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Response",
+                                    "kind": "Http",
+                                    "inputs": {
+                                        "statusCode": 201
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Compose_the_Comment": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "else": {
+                                "actions": {
+                                    "500_Response": {
+                                        "runAfter": {},
+                                        "type": "Response",
+                                        "kind": "Http",
+                                        "inputs": {
+                                            "statusCode": 500
+                                        }
+                                    }
+                                }
+                            },
+                            "expression": {
+                                "and": [
+                                    {
+                                        "equals": [
+                                            "@variables('Action')",
+                                            "opened"
+                                        ]
+                                    }
+                                ]
+                            },
+                            "type": "If"
+                        },
+                        "Initialize_the_Action_variable": {
+                            "runAfter": {},
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Action",
+                                        "type": "string",
+                                        "value": "@triggerBody()?['action']"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_the_Ampersand_variable": {
+                            "runAfter": {
+                                "Initialize_the_Login_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Ampersand",
+                                        "type": "string",
+                                        "value": "@"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_the_CommentsUrl_variable": {
+                            "runAfter": {
+                                "Initialize_the_Action_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "CommentsUrl",
+                                        "type": "string",
+                                        "value": "@triggerBody()?['issue']?['comments_url']"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_the_Login_variable": {
+                            "runAfter": {
+                                "Initialize_the_CommentsUrl_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Login",
+                                        "type": "string",
+                                        "value": "@triggerBody()?['issue']?['user']?['login']"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "keyvault": {
+                                "connectionId": "[parameters('connections_keyvault_externalid')]",
+                                "connectionName": "keyvault",
+                                "id": "/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/keyvault"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
