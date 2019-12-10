@@ -1,0 +1,148 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_twitter_name": {
+            "defaultValue": "twitter",
+            "type": "String"
+        },
+        "connections_azuretables_name": {
+            "defaultValue": "azuretables",
+            "type": "String"
+        },
+        "workflows_TwitterBestDealsWatcher_name": {
+            "defaultValue": "TwitterBestDealsWatcher",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_azuretables_name')]",
+            "location": "uksouth",
+            "properties": {
+                "displayName": "TwitterBestDealsWatcher",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/', parameters('connections_azuretables_name'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_twitter_name')]",
+            "location": "uksouth",
+            "properties": {
+                "displayName": "stuartleaveruk",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/', parameters('connections_twitter_name'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_TwitterBestDealsWatcher_name')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', parameters('connections_azuretables_name'))]",
+                "[resourceId('Microsoft.Web/connections', parameters('connections_twitter_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Day",
+                                "interval": 1
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "For_each": {
+                            "foreach": "@body('Search_tweets')",
+                            "actions": {
+                                "Insert_Entity": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "PartitionKey": "bestdeal-christmasdeals",
+                                            "RowKey": "@{items('For_each')?['TweetId']}",
+                                            "TweetCreatedAt": "@{items('For_each')?['CreatedAtIso']}",
+                                            "TweetCreatedAt@odata.type": "Edm.DateTime",
+                                            "TweetId": "@{items('For_each')?['TweetId']}",
+                                            "TweetText": "@{items('For_each')['TweetText']}",
+                                            "Username": "@{items('For_each')?['UserDetails']?['UserName']}"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['azuretables']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/Tables/@{encodeURIComponent('bestdeals')}/entities"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Search_tweets": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        },
+                        "Search_tweets": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['twitter']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/searchtweets",
+                                "queries": {
+                                    "maxResults": 20,
+                                    "searchQuery": "#christmasdeals"
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azuretables": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_azuretables_name'))]",
+                                "connectionName": "azuretables",
+                                "id": "/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/azuretables"
+                            },
+                            "twitter": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_twitter_name'))]",
+                                "connectionName": "twitter",
+                                "id": "/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/twitter"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
