@@ -1,0 +1,35 @@
+﻿@model List<WishListItemModel>
+
+@{
+    ViewData["Title"] = "List of Wishes";
+}
+
+<div class="text-center">
+    <h1 class="display-4">The Wish List</h1>
+    <hr />
+    <br />
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">From</th>
+                <th scope="col">Wish</th>
+                <th scope="col">Address</th>
+                <th scope="col">Type</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null)
+        {
+            foreach (var wish in Model)
+            {
+                <tr>
+                    <th scope="row">@wish.Name</th>
+                    <th scope="row">@wish.Wish</th>
+                    <th scope="row">@wish.Address</th>
+                    <th scope="row">@wish.Type</th>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
