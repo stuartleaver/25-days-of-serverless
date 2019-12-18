@@ -13,6 +13,9 @@ variables:
   # Function app name
   functionAppName: 'posadafinder'
 
+  # Function app name - Production
+  functionAppNameProd: 'posadafinder-prod'
+
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
 
@@ -51,7 +54,7 @@ stages:
       artifact: drop
 
 - stage: Deploy
-  displayName: Deploy stage
+  displayName: Deploy Development
   dependsOn: Build
   condition: succeeded()
 
@@ -73,7 +76,7 @@ stages:
               appType: functionApp
               appName: $(functionAppName)
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-  - job: Test
+  - job: TestDevelopment
     dependsOn: Deploy
     displayName: Test Function
     pool:
@@ -82,6 +85,42 @@ stages:
       - task: AzureFunction@1
         inputs:
           function: 'https://$(functionAppName).azurewebsites.net/api/PosadasFinder'
+          key: '$(FunctionKey)'
+          method: 'GET'
+          waitForCompletion: 'false'
+
+- stage: DeployProduction
+  displayName: Deploy Production
+  dependsOn: TestDevelopment
+  condition: succeeded()
+
+  jobs:
+  - deployment: DeployProduction
+    displayName: Deploy
+    environment: 'release'
+    pool:
+     vmImage: $(vmImageName)
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureFunctionApp@1
+            displayName: 'Azure functions app deploy'
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              appType: functionApp
+              appName: $(functionAppNameProd)
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+  - job: Test
+    dependsOn: DeployProduction
+    displayName: Test Function
+    pool:
+      server
+    steps:
+      - task: AzureFunction@1
+        inputs:
+          function: 'https://$(functionAppNameProd).azurewebsites.net/api/PosadasFinder'
           key: '$(FunctionKey)'
           method: 'GET'
           waitForCompletion: 'false'
