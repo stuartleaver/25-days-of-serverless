@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Net;
 using System.Text;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Christmas.PosadasApi
 {
@@ -22,6 +24,20 @@ namespace Christmas.PosadasApi
 
             var path = Path.Combine(context.FunctionAppDirectory, "posadas.json");
             var posadaLocations = File.ReadAllText(path);
+
+            try
+            {
+                var obj = JToken.Parse(posadaLocations);
+            }
+            catch (JsonReaderException jex)
+            {
+                log.LogInformation(jex.Message);
+
+                return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Invalid JSON")
+                };
+            }
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
