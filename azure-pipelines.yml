@@ -73,10 +73,16 @@ stages:
               appType: functionApp
               appName: $(functionAppName)
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-          - task: AzureFunction@1
-            inputs:
-              function: 'https://$(functionAppName).azurewebsites.net/api/PosadasFinder'''
-              key: '$(FunctionKey)'
-              method: 'GET'
-              waitForCompletion: 'false'
-              successCriteria: '{"status" : "successful"}'
+  - job: Test
+    dependsOn: Deploy
+    displayName: Test Function
+    pool:
+      server
+    steps:
+      - task: AzureFunction@1
+        inputs:
+          function: 'https://$(functionAppName).azurewebsites.net/api/PosadasFinder'
+          key: '$(FunctionKey)'
+          method: 'GET'
+          waitForCompletion: 'false'
+          successCriteria: '{"status" : "successful"}'
