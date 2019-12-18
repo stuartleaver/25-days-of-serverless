@@ -85,4 +85,3 @@ stages:
           key: '$(FunctionKey)'
           method: 'GET'
           waitForCompletion: 'false'
-          successCriteria: 'eq(root[''status''], ''successful'')'
