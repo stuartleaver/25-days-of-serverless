@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "IotHubs_aircompressor_connectionString": {
+            "value": null
+        },
+        "IotHubs_aircompressor_containerName": {
+            "value": null
+        },
+        "sites_aircompressor_name": {
+            "value": null
+        },
+        "IotHubs_aircompressor_name": {
+            "value": null
+        },
+        "workflows_aircompressor_name": {
+            "value": null
+        },
+        "serverfarms_ASP_Day19_8ab8_name": {
+            "value": null
+        },
+        "components_aircompressor_name": {
+            "value": null
+        },
+        "storageAccounts_storageaccountday1995ca_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___aircompressor_name": {
+            "value": null
+        },
+        "actiongroups_application_20insights_20smart_20detection_externalid": {
+            "value": null
+        }
+    }
+}
