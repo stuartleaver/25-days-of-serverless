@@ -2,15 +2,21 @@
     "posadas": [
         {
             "location": "Oaxaca",
-            host": "Josefina",
+            "host": "Josefina",
             "date": "2019-12-16",
             "time": "21:00"
         },
         {
             "location": "Guanajuato",
-            "host": "María Guadalupe,
+            "host": "María Guadalupe",
             "date": "2019-12-17",
             "time": "20:00"
+        },
+        {
+            "location": "Punta Mita",
+            "host": "Francisco",
+            "date": "2019-12-18",
+            "time": "20:30"
         }
     ]
 }
