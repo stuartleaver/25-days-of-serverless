@@ -338,3 +338,5 @@ ASALocalRun/
 *.code-workspace
 
 .DS_Store
+
+20-iot-with-cognitive-services/mobile-app/GiftDeliveryNotifier/GiftDeliveryNotifier.Mobile.Android/google-services.json
