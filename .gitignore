@@ -340,3 +340,11 @@ ASALocalRun/
 .DS_Store
 
 20-iot-with-cognitive-services/mobile-app/GiftDeliveryNotifier/GiftDeliveryNotifier.Mobile.Android/google-services.json
+
+22-kay-vault-backup/function/__azurite_db_blob__.json
+
+22-kay-vault-backup/function/__azurite_db_blob_extent__.json
+
+22-kay-vault-backup/function/__azurite_db_queue__.json
+
+22-kay-vault-backup/function/__azurite_db_queue_extent__.json
