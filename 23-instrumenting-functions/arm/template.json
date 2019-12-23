@@ -1,0 +1,891 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_twilio_name": {
+            "defaultValue": "twilio",
+            "type": "String"
+        },
+        "serverfarms_ASP_Day23_8a0d_name": {
+            "defaultValue": "ASP-Day23-8a0d",
+            "type": "String"
+        },
+        "sites_chasse_galerie_canoe_health_name": {
+            "defaultValue": "chasse-galerie-canoe-health",
+            "type": "String"
+        },
+        "actionGroups_SendSmsNotification_name": {
+            "defaultValue": "SendSmsNotification",
+            "type": "String"
+        },
+        "components_chasse_galerie_canoe_health_name": {
+            "defaultValue": "chasse-galerie-canoe-health",
+            "type": "String"
+        },
+        "storageAccounts_chassegaleriecanoehealth_name": {
+            "defaultValue": "chassegaleriecanoehealth",
+            "type": "String"
+        },
+        "workflows_chasse_galerie_canoe_health_alert_name": {
+            "defaultValue": "chasse-galerie-canoe-health-alert",
+            "type": "String"
+        },
+        "dashboards_d611588d_db35_4b26_bc5b_b302fc12142f_dashboard_name": {
+            "defaultValue": "d611588d-db35-4b26-bc5b-b302fc12142f-dashboard",
+            "type": "String"
+        },
+        "webtests_canoe_health_check___200_chasse_galerie_canoe_health_name": {
+            "defaultValue": "canoe health check - 200-chasse-galerie-canoe-health",
+            "type": "String"
+        },
+        "webtests_canoe_health_check___400_chasse_galerie_canoe_health_name": {
+            "defaultValue": "canoe health check - 400-chasse-galerie-canoe-health",
+            "type": "String"
+        },
+        "smartdetectoralertrules_failure_anomalies___chasse_galerie_canoe_health_name": {
+            "defaultValue": "failure anomalies - chasse-galerie-canoe-health",
+            "type": "String"
+        },
+        "actiongroups_application_20insights_20smart_20detection_externalid": {
+            "defaultValue": "/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/resourceGroups/25daysofserverless_rg/providers/microsoft.insights/actiongroups/application%20insights%20smart%20detection",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2015-05-01",
+            "name": "[parameters('components_chasse_galerie_canoe_health_name')]",
+            "location": "uksouth",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Request_Source": "IbizaWebAppExtensionCreate"
+            }
+        },
+        {
+            "type": "microsoft.insights/webtests",
+            "apiVersion": "2015-05-01",
+            "name": "[parameters('webtests_canoe_health_check___200_chasse_galerie_canoe_health_name')]",
+            "location": "uksouth",
+            "tags": {
+                "hidden-link:/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/resourceGroups/Day-23/providers/microsoft.insights/components/chasse-galerie-canoe-health": "Resource"
+            },
+            "properties": {
+                "SyntheticMonitorId": "[parameters('webtests_canoe_health_check___200_chasse_galerie_canoe_health_name')]",
+                "Name": "Canoe Health Check - 200",
+                "Enabled": false,
+                "Frequency": 300,
+                "Timeout": 120,
+                "Kind": "ping",
+                "RetryEnabled": true,
+                "Locations": [
+                    {
+                        "Id": "emea-ru-msa-edge"
+                    }
+                ],
+                "Configuration": {
+                    "WebTest": "<WebTest         Name=\"Canoe Health Check - 200\"         Id=\"7c062eef-7d27-44b6-9f18-94c077351bd7\"         Enabled=\"True\"         CssProjectStructure=\"\"         CssIteration=\"\"         Timeout=\"120\"         WorkItemIds=\"\"         xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\"         Description=\"\"         CredentialUserName=\"\"         CredentialPassword=\"\"         PreAuthenticate=\"True\"         Proxy=\"default\"         StopOnError=\"False\"         RecordedResultFile=\"\"         ResultsLocale=\"\">        <Items>        <Request         Method=\"GET\"         Guid=\"a3a99532-fb5d-4b88-f787-660a9970aa46\"         Version=\"1.1\"         Url=\"https://chasse-galerie-canoe-health.azurewebsites.net/api/canoehealthcheck\"         ThinkTime=\"0\"         Timeout=\"120\"         ParseDependentRequests=\"False\"         FollowRedirects=\"True\"         RecordResult=\"True\"         Cache=\"False\"         ResponseTimeGoal=\"0\"         Encoding=\"utf-8\"         ExpectedHttpStatusCode=\"200\"         ExpectedResponseUrl=\"\"         ReportingName=\"\"         IgnoreHttpStatusCode=\"False\" />        </Items>        </WebTest>"
+                }
+            }
+        },
+        {
+            "type": "microsoft.insights/webtests",
+            "apiVersion": "2015-05-01",
+            "name": "[parameters('webtests_canoe_health_check___400_chasse_galerie_canoe_health_name')]",
+            "location": "uksouth",
+            "tags": {
+                "hidden-link:/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/resourceGroups/Day-23/providers/microsoft.insights/components/chasse-galerie-canoe-health": "Resource"
+            },
+            "properties": {
+                "SyntheticMonitorId": "[parameters('webtests_canoe_health_check___400_chasse_galerie_canoe_health_name')]",
+                "Name": "Canoe Health Check - 400",
+                "Enabled": true,
+                "Frequency": 300,
+                "Timeout": 120,
+                "Kind": "ping",
+                "RetryEnabled": true,
+                "Locations": [
+                    {
+                        "Id": "emea-ru-msa-edge"
+                    }
+                ],
+                "Configuration": {
+                    "WebTest": "<WebTest         Name=\"Canoe Health Check - 400\"         Id=\"1280202a-e501-4993-9de4-a854e5bfe5ae\"         Enabled=\"True\"         CssProjectStructure=\"\"         CssIteration=\"\"         Timeout=\"120\"         WorkItemIds=\"\"         xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\"         Description=\"\"         CredentialUserName=\"\"         CredentialPassword=\"\"         PreAuthenticate=\"True\"         Proxy=\"default\"         StopOnError=\"False\"         RecordedResultFile=\"\"         ResultsLocale=\"\">        <Items>        <Request         Method=\"GET\"         Guid=\"a701d933-b338-ef6c-bb1c-83d7b54a28d7\"         Version=\"1.1\"         Url=\"https://chasse-galerie-canoe-health.azurewebsites.net/api/canoehealthcheck\"         ThinkTime=\"0\"         Timeout=\"120\"         ParseDependentRequests=\"False\"         FollowRedirects=\"True\"         RecordResult=\"True\"         Cache=\"False\"         ResponseTimeGoal=\"0\"         Encoding=\"utf-8\"         ExpectedHttpStatusCode=\"400\"         ExpectedResponseUrl=\"\"         ReportingName=\"\"         IgnoreHttpStatusCode=\"False\" />        </Items>        </WebTest>"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Portal/dashboards",
+            "apiVersion": "2019-01-01-preview",
+            "name": "[parameters('dashboards_d611588d_db35_4b26_bc5b_b302fc12142f_dashboard_name')]",
+            "location": "uksouth",
+            "tags": {
+                "hidden-title": "Chasse Galerie Canoe Health Dashboard"
+            },
+            "properties": {
+                "lenses": {
+                    "0": {
+                        "order": 0,
+                        "parts": {
+                            "0": {
+                                "position": {
+                                    "x": 0,
+                                    "y": 0,
+                                    "rowSpan": 1,
+                                    "colSpan": 5
+                                },
+                                "metadata": {
+                                    "inputs": [],
+                                    "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                                    "settings": {}
+                                }
+                            },
+                            "1": {
+                                "position": {
+                                    "x": 5,
+                                    "y": 0,
+                                    "rowSpan": 1,
+                                    "colSpan": 1
+                                },
+                                "metadata": {
+                                    "inputs": [
+                                        {
+                                            "name": "ComponentId",
+                                            "value": {
+                                                "Name": "chasse-galerie-canoe-health",
+                                                "SubscriptionId": "5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8",
+                                                "ResourceGroup": "Day-23"
+                                            }
+                                        },
+                                        {
+                                            "name": "TimeContext",
+                                            "value": {
+                                                "durationMs": 86400000,
+                                                "endTime": null,
+                                                "createdTime": "2018-05-04T01:22:35.782Z",
+                                                "isInitialTime": true,
+                                                "grain": 1,
+                                                "useDashboardTimeRange": false
+                                            }
+                                        }
+                                    ],
+                                    "type": "Extension/AppInsightsExtension/PartType/UsageUsersOverviewPart",
+                                    "asset": {}
+                                }
+                            },
+                            "2": {
+                                "position": {
+                                    "x": 0,
+                                    "y": 1,
+                                    "rowSpan": 4,
+                                    "colSpan": 6
+                                },
+                                "metadata": {
+                                    "inputs": [
+                                        {
+                                            "name": "ComponentId",
+                                            "value": {
+                                                "Name": "chasse-galerie-canoe-health",
+                                                "SubscriptionId": "5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8",
+                                                "ResourceGroup": "Day-23"
+                                            }
+                                        },
+                                        {
+                                            "name": "TimeContext",
+                                            "value": {
+                                                "durationMs": 86400000,
+                                                "createdTime": "2019-12-23T13:23:22.18Z",
+                                                "isInitialTime": false,
+                                                "grain": 1,
+                                                "useDashboardTimeRange": false
+                                            },
+                                            "isOptional": true
+                                        },
+                                        {
+                                            "name": "ConfigurationId",
+                                            "value": null,
+                                            "isOptional": true
+                                        },
+                                        {
+                                            "name": "Version",
+                                            "value": "1.0",
+                                            "isOptional": true
+                                        },
+                                        {
+                                            "name": "RestoreData",
+                                            "value": "{\"version\":\"Segmentation/2.0\",\"metric\":\"Ocurrences\",\"cohortId\":null,\"isAntiCohort\":false,\"chartType\":3,\"eventsDataObject\":{\"version\":\"EventsDropdown/1.0\",\"typesWithAllSelected\":{\"3\":true,\"5\":true},\"events\":[],\"cohortsIds\":[]},\"filters\":[],\"by\":null,\"grain\":\"1h\",\"splitBy\":null,\"timeContext\":{\"durationMs\":86400000,\"endTime\":null,\"createdTime\":\"Start Time\",\"isInitialTime\":false,\"grain\":1,\"useDashboardTimeRange\":false},\"histograms\":[],\"heroVisible\":true,\"gridsVisible\":true,\"insightsVisible\":true,\"isSampleRandom\":true,\"apdexThreshold\":null}",
+                                            "isOptional": true
+                                        }
+                                    ],
+                                    "type": "Extension/AppInsightsExtension/PartType/EventsSegmentationPinnedPart",
+                                    "asset": {}
+                                }
+                            }
+                        }
+                    }
+                },
+                "metadata": {
+                    "model": {}
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "name": "[parameters('storageAccounts_chassegaleriecanoehealth_name')]",
+            "location": "uksouth",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_twilio_name')]",
+            "location": "uksouth",
+            "properties": {
+                "displayName": "TwilioConnection",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/', parameters('connections_twilio_name'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('serverfarms_ASP_Day23_8a0d_name')]",
+            "location": "UK South",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+            "apiVersion": "2019-06-01",
+            "name": "[parameters('smartdetectoralertrules_failure_anomalies___chasse_galerie_canoe_health_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+                "state": "Enabled",
+                "severity": "Sev3",
+                "frequency": "PT1M",
+                "detector": {
+                    "id": "FailureAnomaliesDetector"
+                },
+                "scope": [
+                    "[resourceId('microsoft.insights/components', parameters('components_chasse_galerie_canoe_health_name'))]"
+                ],
+                "actionGroups": {
+                    "groupIds": [
+                        "[parameters('actiongroups_application_20insights_20smart_20detection_externalid')]"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "microsoft.insights/actionGroups",
+            "apiVersion": "2019-03-01",
+            "name": "[parameters('actionGroups_SendSmsNotification_name')]",
+            "location": "Global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Logic/workflows', parameters('workflows_chasse_galerie_canoe_health_alert_name'))]"
+            ],
+            "properties": {
+                "groupShortName": "Send SMS",
+                "enabled": true,
+                "emailReceivers": [],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [
+                    {
+                        "name": "[concat(parameters('actionGroups_SendSmsNotification_name'), 'LogicApp')]",
+                        "resourceId": "[resourceId('Microsoft.Logic/workflows', parameters('workflows_chasse_galerie_canoe_health_alert_name'))]",
+                        "callbackUrl": "https://prod-12.uksouth.logic.azure.com:443/workflows/de07a6b863154028b2d77c5c28bbad59/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=pSfGriMLlXzpAcGzQEKQ7ikyvDuZzYF3PYzbGAulI6Q",
+                        "useCommonAlertSchema": false
+                    }
+                ],
+                "azureFunctionReceivers": []
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_chasse_galerie_canoe_health_alert_name')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', parameters('connections_twilio_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        },
+                        "ToPhoneNumber": {
+                            "defaultValue": "{fill in phone number}",
+                            "type": "String"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "context": {
+                                                    "properties": {
+                                                        "activityLog": {
+                                                            "properties": {
+                                                                "authorization": {
+                                                                    "properties": {
+                                                                        "action": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "scope": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                },
+                                                                "caller": {
+                                                                    "type": "string"
+                                                                },
+                                                                "channels": {
+                                                                    "type": "string"
+                                                                },
+                                                                "claims": {
+                                                                    "type": "string"
+                                                                },
+                                                                "correlationId": {
+                                                                    "type": "string"
+                                                                },
+                                                                "description": {
+                                                                    "type": "string"
+                                                                },
+                                                                "eventDataId": {
+                                                                    "type": "string"
+                                                                },
+                                                                "eventSource": {
+                                                                    "type": "string"
+                                                                },
+                                                                "eventTimestamp": {
+                                                                    "type": "string"
+                                                                },
+                                                                "level": {
+                                                                    "type": "string"
+                                                                },
+                                                                "operationId": {
+                                                                    "type": "string"
+                                                                },
+                                                                "operationName": {
+                                                                    "type": "string"
+                                                                },
+                                                                "resourceGroupName": {
+                                                                    "type": "string"
+                                                                },
+                                                                "resourceId": {
+                                                                    "type": "string"
+                                                                },
+                                                                "resourceProviderName": {
+                                                                    "type": "string"
+                                                                },
+                                                                "resourceType": {
+                                                                    "type": "string"
+                                                                },
+                                                                "status": {
+                                                                    "type": "string"
+                                                                },
+                                                                "subStatus": {
+                                                                    "type": "string"
+                                                                },
+                                                                "submissionTimestamp": {
+                                                                    "type": "string"
+                                                                },
+                                                                "subscriptionId": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "properties": {
+                                                    "properties": {},
+                                                    "type": "object"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "schemaId": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Send_Text_Message_(SMS)": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "body": "One of the flying lumberjacks' has said a curse word!",
+                                    "from": "+12053031873",
+                                    "to": "@parameters('ToPhoneNumber')"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['twilio']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/Messages.json"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "twilio": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_twilio_name'))]",
+                                "connectionName": "twilio",
+                                "id": "/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/twilio"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_chassegaleriecanoehealth_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_chassegaleriecanoehealth_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('sites_chasse_galerie_canoe_health_name')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_Day23_8a0d_name'))]"
+            ],
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_Day23_8a0d_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false,
+                "redundancyMode": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/web')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "phpVersion": "5.6",
+                "pythonVersion": "",
+                "nodeVersion": "",
+                "linuxFxVersion": "",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$chasse-galerie-canoe-health",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "appCommandLine": "",
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false,
+                        "virtualDirectories": null
+                    }
+                ],
+                "winAuthAdminState": 0,
+                "winAuthTenantState": 0,
+                "customAppPoolIdentityAdminState": false,
+                "customAppPoolIdentityTenantState": false,
+                "loadBalancing": "LeastRequests",
+                "routingRules": [],
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetName": "",
+                "siteAuthEnabled": false,
+                "siteAuthSettings": {
+                    "enabled": null,
+                    "unauthenticatedClientAction": null,
+                    "tokenStoreEnabled": null,
+                    "allowedExternalRedirectUrls": null,
+                    "defaultProvider": null,
+                    "clientId": null,
+                    "clientSecret": null,
+                    "clientSecretCertificateThumbprint": null,
+                    "issuer": null,
+                    "allowedAudiences": null,
+                    "additionalLoginParams": null,
+                    "isAadAutoProvisioned": false,
+                    "googleClientId": null,
+                    "googleClientSecret": null,
+                    "googleOAuthScopes": null,
+                    "facebookAppId": null,
+                    "facebookAppSecret": null,
+                    "facebookOAuthScopes": null,
+                    "twitterConsumerKey": null,
+                    "twitterConsumerSecret": null,
+                    "microsoftAccountClientId": null,
+                    "microsoftAccountClientSecret": null,
+                    "microsoftAccountOAuthScopes": null
+                },
+                "cors": {
+                    "allowedOrigins": [
+                        "https://functions.azure.com",
+                        "https://functions-staging.azure.com",
+                        "https://functions-next.azure.com"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "ftpsState": "AllAllowed",
+                "reservedInstanceCount": 0,
+                "fileChangeAuditEnabled": false,
+                "functionsRuntimeScaleMonitoringEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/1ddd20c9063042428439ffe518bcc3ec')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-23T09:49:14.4042439Z",
+                "end_time": "2019-12-23T09:49:30.2007605Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/2a380a38e7dc427089822be672f23bc2')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-23T10:56:08.0350963Z",
+                "end_time": "2019-12-23T10:56:18.9943339Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/4da508f7b9f74b369d65e815f9cf0b9f')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-23T12:29:01.1261003Z",
+                "end_time": "2019-12-23T12:29:12.0817592Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/8f032b1c1404406d8c387bf790f8d139')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-23T10:41:49.6603878Z",
+                "end_time": "2019-12-23T10:42:02.9705997Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/be4ff54bf2564134b0dcfee52bc294be')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-23T10:02:31.0763474Z",
+                "end_time": "2019-12-23T10:02:44.0734376Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/eb80b7fc216844fe8ca4f2307dcb845d')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-23T10:12:02.0158948Z",
+                "end_time": "2019-12-23T10:12:11.4001228Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/CanoeHealth')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://chasse-galerie-canoe-health.azurewebsites.net/admin/vfs/site/wwwroot/CanoeHealth/",
+                "script_href": "https://chasse-galerie-canoe-health.azurewebsites.net/admin/vfs/site/wwwroot/bin/health-check-endpoint.dll",
+                "config_href": "https://chasse-galerie-canoe-health.azurewebsites.net/admin/vfs/site/wwwroot/CanoeHealth/function.json",
+                "href": "https://chasse-galerie-canoe-health.azurewebsites.net/admin/functions/CanoeHealth",
+                "config": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/CanoeHealthCheck')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://chasse-galerie-canoe-health.azurewebsites.net/admin/vfs/site/wwwroot/CanoeHealthCheck/",
+                "script_href": "https://chasse-galerie-canoe-health.azurewebsites.net/admin/vfs/site/wwwroot/bin/health-check-endpoint.dll",
+                "config_href": "https://chasse-galerie-canoe-health.azurewebsites.net/admin/vfs/site/wwwroot/CanoeHealthCheck/function.json",
+                "href": "https://chasse-galerie-canoe-health.azurewebsites.net/admin/functions/CanoeHealthCheck",
+                "config": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_chasse_galerie_canoe_health_name'), '/', parameters('sites_chasse_galerie_canoe_health_name'), '.azurewebsites.net')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_chasse_galerie_canoe_health_name'))]"
+            ],
+            "properties": {
+                "siteName": "chasse-galerie-canoe-health",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_chassegaleriecanoehealth_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_chassegaleriecanoehealth_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_chassegaleriecanoehealth_name'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_chassegaleriecanoehealth_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_chassegaleriecanoehealth_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_chassegaleriecanoehealth_name'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_chassegaleriecanoehealth_name'), '/default/', parameters('storageAccounts_chassegaleriecanoehealth_name'), '-leases')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_chassegaleriecanoehealth_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_chassegaleriecanoehealth_name'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        }
+    ]
+}

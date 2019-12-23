@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_twilio_name": {
+            "value": null
+        },
+        "serverfarms_ASP_Day23_8a0d_name": {
+            "value": null
+        },
+        "sites_chasse_galerie_canoe_health_name": {
+            "value": null
+        },
+        "actionGroups_SendSmsNotification_name": {
+            "value": null
+        },
+        "components_chasse_galerie_canoe_health_name": {
+            "value": null
+        },
+        "storageAccounts_chassegaleriecanoehealth_name": {
+            "value": null
+        },
+        "workflows_chasse_galerie_canoe_health_alert_name": {
+            "value": null
+        },
+        "dashboards_d611588d_db35_4b26_bc5b_b302fc12142f_dashboard_name": {
+            "value": null
+        },
+        "webtests_canoe_health_check___200_chasse_galerie_canoe_health_name": {
+            "value": null
+        },
+        "webtests_canoe_health_check___400_chasse_galerie_canoe_health_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___chasse_galerie_canoe_health_name": {
+            "value": null
+        },
+        "actiongroups_application_20insights_20smart_20detection_externalid": {
+            "value": null
+        }
+    }
+}
