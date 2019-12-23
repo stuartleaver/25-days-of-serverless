@@ -1,0 +1,3 @@
+azure-functions
+tensorflow==1.14.0
+textgenrnn==1.5.0
