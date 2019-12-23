@@ -4,7 +4,7 @@
 
 ## Solution
 
-**Azure Function** to simulate the flying lumberjacks cursing 10% of the time on their [Chasse-Galerie](https://en.wikipedia.org/wiki/Chasse-galerie). Return a 200 if things are OK, else a 400. **[Azure Application Insights](https://docs.microsoft.com/azure/azure-functions/functions-monitoring?WT.mc_id=25daysofserverless-github-cxa)** is then used to capture the events from the Function app. This is done through the use of Rules Management with an Action of triggering a **Logic App**. The **Logic App*, when triggered, sends an SMS text message waring of the flying Lumberjacks behaviour.
+**Azure Function** to simulate the flying lumberjacks cursing 10% of the time on their [Chasse-Galerie](https://en.wikipedia.org/wiki/Chasse-galerie). Return a 200 if things are OK, else a 400. **[Azure Application Insights](https://docs.microsoft.com/azure/azure-functions/functions-monitoring?WT.mc_id=25daysofserverless-github-cxa)** is then used to capture the events from the Function app. This is done through the use of Rules Management with an Action of triggering a **Logic App**. The **Logic App**, when triggered, sends an SMS text message waring of the flying Lumberjacks behaviour.
 The Events are also displayed on a custom Dashboard.
 
 * Rule
