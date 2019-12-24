@@ -20,7 +20,7 @@ namespace Christmas.Sweden
         [FunctionName("TweetSentimentAnalyser")]
         public static async Task Run(
             [QueueTrigger("translated-tweets", Connection = "AzureWebJobsStorage")] AnalysedTweet tweet,
-            [Table("processed-tweets", Connection = "AzureWebJobsStorage")] CloudTable table,
+            [Table("processedtweets", Connection = "AzureWebJobsStorage")] CloudTable table,
             ILogger log)
         {
             // Declares a KeyVaultClient instance.
@@ -45,9 +45,9 @@ namespace Christmas.Sweden
 
         public static async Task<double> SentimentPredict(string text)
         {
-            var subscriptionKey = await _kv.GetSecretAsync(_kvEndpoint, "SENTIMENT_ANALYSER_SUBSCRIPTION_KEY");
+            var subscriptionKey = await _kv.GetSecretAsync(_kvEndpoint, "TEXT-ANALYTICS-SUBSCRIPTION-KEY");
 
-            var textAnalyticsClientEndpoint = await _kv.GetSecretAsync(_kvEndpoint, "TEXT_ANALYTICS_CLIENT_ENDPOINT");
+            var textAnalyticsClientEndpoint = await _kv.GetSecretAsync(_kvEndpoint, "TEXT-ANALYTICS-CLIENT-ENDPOINT");
 
             ApiKeyServiceClientCredentials credentials = new ApiKeyServiceClientCredentials(subscriptionKey.Value);
             TextAnalyticsClient client = new TextAnalyticsClient(credentials)

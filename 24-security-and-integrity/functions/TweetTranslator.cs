@@ -19,12 +19,12 @@ namespace Christmas.Sweden
         private static KeyVaultClient _kv;
 
         private static string _kvEndpoint;
-        
+
         [FunctionName("TweetTranslator")]
         public static async Task Run([CosmosDBTrigger(
             databaseName: "gavlebocken",
             collectionName: "tweets",
-            ConnectionStringSetting = "AzureWebJobsStorage",
+            ConnectionStringSetting = "CosmosDbConnectionString",
             CreateLeaseCollectionIfNotExists = true,
             LeaseCollectionName = "leases")]IReadOnlyList<Document> input,
             [Queue("translated-tweets")] IAsyncCollector<AnalysedTweet> queue,
@@ -34,14 +34,26 @@ namespace Christmas.Sweden
             var _azureServiceTokenProvider = new AzureServiceTokenProvider();
             _kv = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(_azureServiceTokenProvider.KeyVaultTokenCallback));
 
-            _kvEndpoint = Environment.GetEnvironmentVariable("KEY_VAULT_ENDPOINT")
-            
+            _kvEndpoint = Environment.GetEnvironmentVariable("KEY_VAULT_ENDPOINT");
+
             if (input != null && input.Count > 0)
             {
                 log.LogInformation("Documents modified " + input.Count);
-                log.LogInformation("First document Id " + input[0].Id);
 
-                await queue.AddAsync(new AnalysedTweet());
+                for (var i = 0; i < input.Count; i++)
+                {
+                    var tweet = new Tweet
+                    {
+                        Id = input[i].Id,
+                        Text = input[i].GetPropertyValue<string>("text"),
+                        Username = input[i].GetPropertyValue<string>("username"),
+                        SentTimestamp = input[i].GetPropertyValue<string>("senttimestamp"),
+                    };
+
+                    var analysedTweet = await Translate(tweet);
+
+                    await queue.AddAsync(analysedTweet);
+                }
             }
         }
 
@@ -50,8 +62,8 @@ namespace Christmas.Sweden
             object[] body = new object[] { new { Text = tweet.Text } };
             var requestBody = JsonConvert.SerializeObject(body);
 
-            var endPoint = await _kv.GetSecretAsync(_kvEndpoint, "TEXT_TRANSLATOR_ENDPOINT");
-            var subscriptionKey = await _kv.GetSecretAsync(_kvEndpoint, "TEXT_TRANSLATOR_SUBSCRIPTION_KEY");
+            var endPoint = await _kv.GetSecretAsync(_kvEndpoint, "TEXT-TRANSLATOR-ENDPOINT");
+            var subscriptionKey = await _kv.GetSecretAsync(_kvEndpoint, "TEXT-TRANSLATOR-SUBSCRIPTION-KEY");
 
             using (var client = new HttpClient())
             using (var request = new HttpRequestMessage())
@@ -79,15 +91,13 @@ namespace Christmas.Sweden
 
                 Console.WriteLine("Translated to {0}: {1}", deserializedOutput[0].Translations[0].To, deserializedOutput[0].Translations[0].Text);
 
-                return new AnalysedTweet
-                {
-                    Who = letter.Who,
-                    Message = letter.Message,
-                    FromLanguage = deserializedOutput[0].DetectedLanguage.Language,
-                    ToLanguage = deserializedOutput[0].Translations[0].To,
-                    TranslationConfidenceScore = deserializedOutput[0].DetectedLanguage.Score,
-                    TranslatedMessage = deserializedOutput[0].Translations[0].Text
-                };
+                return new AnalysedTweet(
+                    tweet.Text,
+                    deserializedOutput[0].Translations[0].Text,
+                    deserializedOutput[0].DetectedLanguage.Language,
+                    deserializedOutput[0].Translations[0].To,
+                    tweet.Username,
+                    tweet.SentTimestamp);
             }
         }
     }

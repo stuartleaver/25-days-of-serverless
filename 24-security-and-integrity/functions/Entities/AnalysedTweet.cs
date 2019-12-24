@@ -19,11 +19,23 @@ namespace Christmas.Sweden.Entities
 
         public double Sentiment { get; set; }
 
-        public AnalysedTweet()
+        public AnalysedTweet(string originalText, string translatedText, string originalLanguage, string translatedLanguage, string username, string sentTimestamp)
         {
-            PartitionKey = Username.Replace(" ", "");
+            PartitionKey = username.Replace(" ", "");
 
             RowKey = Guid.NewGuid().ToString();
+
+            OriginalText = originalText;
+
+            TranslatedText = translatedText;
+
+            OriginalLanguage = originalLanguage;
+
+            TranslatedLanguage = translatedLanguage;
+
+            Username = username;
+
+            SentTimestamp = sentTimestamp;
         }
     }
 }
