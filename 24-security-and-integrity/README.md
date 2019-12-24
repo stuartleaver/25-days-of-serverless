@@ -4,6 +4,25 @@
 
 ## Solution
 
+Quite a few things in this Solution
+
+* **Logic App** to retrieve Tweets.
+* **CosmosDB** to store the Tweets.
+* **Azure Functions** to process tweets for translation and sentiment analysis.
+* **Storage** for queues and tables to hold the dats.
+* **Azure Key Vault** to store all the secrets to keep them safe.
+* **Managed Identity** to access the Key Vaults for the applications to retrieve keys.
+* **Azure Function** to backup the Key Vault.
+* **App Service** to display an aggregated list of Tweets.
+
+Screenshots:
+* Logic App
+![Logic App](screenshots/logic-app.png)
+* Azure Key Vault secrets
+![Azure Key Vault secrets](screenshots/keys.png)
+* App Services
+![App Services](screenshots/ui.png)
+
 
 ## The Challenge
 
