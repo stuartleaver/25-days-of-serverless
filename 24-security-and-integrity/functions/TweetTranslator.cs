@@ -44,10 +44,10 @@ namespace Christmas.Sweden
                 {
                     var tweet = new Tweet
                     {
-                        Id = input[i].Id,
+                        TweetId = input[i].Id,
                         Text = input[i].GetPropertyValue<string>("text"),
                         Username = input[i].GetPropertyValue<string>("username"),
-                        SentTimestamp = input[i].GetPropertyValue<string>("senttimestamp"),
+                        SentTimestamp = input[i].GetPropertyValue<string>("sentTimestamp"),
                     };
 
                     var analysedTweet = await Translate(tweet);
@@ -92,6 +92,7 @@ namespace Christmas.Sweden
                 Console.WriteLine("Translated to {0}: {1}", deserializedOutput[0].Translations[0].To, deserializedOutput[0].Translations[0].Text);
 
                 return new AnalysedTweet(
+                    tweet.TweetId,
                     tweet.Text,
                     deserializedOutput[0].Translations[0].Text,
                     deserializedOutput[0].DetectedLanguage.Language,

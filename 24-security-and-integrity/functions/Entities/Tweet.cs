@@ -2,7 +2,7 @@ namespace Christmas.Sweden.Entities
 {
     public class Tweet
     {
-        public string Id { get; set; }
+        public string TweetId { get; set; }
 
         public string Text { get; set; }
 

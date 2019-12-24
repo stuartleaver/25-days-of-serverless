@@ -5,6 +5,7 @@ namespace Christmas.Sweden.Entities
 {
     public class AnalysedTweet : TableEntity
     {
+        public string TweetId  { get; set; }
         public string OriginalText { get; set; }
 
         public string TranslatedText { get; set; }
@@ -19,11 +20,13 @@ namespace Christmas.Sweden.Entities
 
         public double Sentiment { get; set; }
 
-        public AnalysedTweet(string originalText, string translatedText, string originalLanguage, string translatedLanguage, string username, string sentTimestamp)
+        public AnalysedTweet(string tweetId, string originalText, string translatedText, string originalLanguage, string translatedLanguage, string username, string sentTimestamp)
         {
             PartitionKey = username.Replace(" ", "");
 
-            RowKey = Guid.NewGuid().ToString();
+            RowKey = tweetId;
+
+            TweetId = tweetId;
 
             OriginalText = originalText;
 
