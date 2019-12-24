@@ -5,6 +5,9 @@
         "sites_gavlegoat_name": {
             "value": null
         },
+        "connections_twitter_name": {
+            "value": null
+        },
         "vaults_gavlegoat_name": {
             "value": null
         },
@@ -12,6 +15,9 @@
             "value": null
         },
         "sites_gavlegoatsocial_name": {
+            "value": null
+        },
+        "connections_documentdb_name": {
             "value": null
         },
         "components_gavlegoat_name": {

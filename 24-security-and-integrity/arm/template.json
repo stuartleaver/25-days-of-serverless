@@ -6,6 +6,10 @@
             "defaultValue": "gavlegoat",
             "type": "String"
         },
+        "connections_twitter_name": {
+            "defaultValue": "twitter",
+            "type": "String"
+        },
         "vaults_gavlegoat_name": {
             "defaultValue": "gavlegoat",
             "type": "String"
@@ -16,6 +20,10 @@
         },
         "sites_gavlegoatsocial_name": {
             "defaultValue": "gavlegoatsocial",
+            "type": "String"
+        },
+        "connections_documentdb_name": {
+            "defaultValue": "documentdb",
             "type": "String"
         },
         "components_gavlegoat_name": {
@@ -191,6 +199,73 @@
                 "accessPolicies": [
                     {
                         "tenantId": "660d0d0f-40a4-4a00-af28-a6fbdf30a1f5",
+                        "objectId": "14d35579-e47d-4bcc-a241-89b0811f1d05",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    },
+                    {
+                        "tenantId": "660d0d0f-40a4-4a00-af28-a6fbdf30a1f5",
+                        "objectId": "541e0841-92ca-4e92-8018-ace12e27541a",
+                        "permissions": {
+                            "keys": [],
+                            "secrets": [
+                                "Get",
+                                "List"
+                            ],
+                            "certificates": []
+                        }
+                    },
+                    {
+                        "tenantId": "660d0d0f-40a4-4a00-af28-a6fbdf30a1f5",
+                        "objectId": "e5a2817f-9b66-42cb-8960-2ae505ce1fd9",
+                        "permissions": {
+                            "keys": [],
+                            "secrets": [
+                                "Get",
+                                "List"
+                            ],
+                            "certificates": []
+                        }
+                    },
+                    {
+                        "tenantId": "660d0d0f-40a4-4a00-af28-a6fbdf30a1f5",
                         "objectId": "c072ed01-4a74-4985-b18b-0188c25d73ce",
                         "permissions": {
                             "keys": [
@@ -236,24 +311,6 @@
                 "enabledForDeployment": false,
                 "enabledForDiskEncryption": false,
                 "enabledForTemplateDeployment": false
-            }
-        },
-        {
-            "type": "Microsoft.Logic/workflows",
-            "apiVersion": "2017-07-01",
-            "name": "[parameters('workflows_gavlegoat_name')]",
-            "location": "uksouth",
-            "properties": {
-                "state": "Enabled",
-                "definition": {
-                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {},
-                    "triggers": {},
-                    "actions": {},
-                    "outputs": {}
-                },
-                "parameters": {}
             }
         },
         {
@@ -315,6 +372,32 @@
                         }
                     },
                     "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_documentdb_name')]",
+            "location": "uksouth",
+            "properties": {
+                "displayName": "gavlegoat",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/', parameters('connections_documentdb_name'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_twitter_name')]",
+            "location": "uksouth",
+            "properties": {
+                "displayName": "stuartleaveruk",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/', parameters('connections_twitter_name'))]"
                 }
             }
         },
@@ -469,6 +552,90 @@
             }
         },
         {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+            "apiVersion": "2019-08-01",
+            "name": "[concat(parameters('databaseAccounts_gavlegoat_name'), '/gavlebocken')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "gavlebocken"
+                },
+                "options": {}
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_gavlegoat_name'), '/TEXT-ANALYTICS-CLIENT-ENDPOINT')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_gavlegoat_name'), '/TEXT-ANALYTICS-SUBSCRIPTION-KEY')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_gavlegoat_name'), '/TEXT-TRANSLATOR-ENDPOINT')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_gavlegoat_name'), '/TEXT-TRANSLATOR-SUBSCRIPTION-KEY')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "name": "[concat(parameters('vaults_gavlegoat_name'), '/TWEETS-STORAGE-ACCOUNT-CONNECTION-STRING')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "2019-04-01",
             "name": "[concat(parameters('storageAccounts_gavlegoat_name'), '/default')]",
@@ -515,6 +682,11 @@
                 "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_Day24_b58a_name'))]"
             ],
             "kind": "functionapp",
+            "identity": {
+                "principalId": "e5a2817f-9b66-42cb-8960-2ae505ce1fd9",
+                "tenantId": "660d0d0f-40a4-4a00-af28-a6fbdf30a1f5",
+                "type": "SystemAssigned"
+            },
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
@@ -552,6 +724,11 @@
                 "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_Day24_96ea_name'))]"
             ],
             "kind": "functionapp",
+            "identity": {
+                "principalId": "14d35579-e47d-4bcc-a241-89b0811f1d05",
+                "tenantId": "660d0d0f-40a4-4a00-af28-a6fbdf30a1f5",
+                "type": "SystemAssigned"
+            },
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
@@ -589,6 +766,11 @@
                 "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_gavlegoatsocial_name'))]"
             ],
             "kind": "app",
+            "identity": {
+                "principalId": "541e0841-92ca-4e92-8018-ace12e27541a",
+                "tenantId": "660d0d0f-40a4-4a00-af28-a6fbdf30a1f5",
+                "type": "SystemAssigned"
+            },
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
@@ -644,6 +826,7 @@
                 "linuxFxVersion": "",
                 "requestTracingEnabled": false,
                 "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
                 "httpLoggingEnabled": false,
                 "logsDirectorySizeLimit": 35,
                 "detailedErrorLoggingEnabled": false,
@@ -708,6 +891,7 @@
                     "supportCredentials": false
                 },
                 "localMySqlEnabled": false,
+                "managedServiceIdentityId": 6875,
                 "ipSecurityRestrictions": [
                     {
                         "ipAddress": "Any",
@@ -762,6 +946,7 @@
                 "linuxFxVersion": "",
                 "requestTracingEnabled": false,
                 "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
                 "httpLoggingEnabled": false,
                 "logsDirectorySizeLimit": 35,
                 "detailedErrorLoggingEnabled": false,
@@ -826,6 +1011,7 @@
                     "supportCredentials": false
                 },
                 "localMySqlEnabled": false,
+                "managedServiceIdentityId": 6876,
                 "ipSecurityRestrictions": [
                     {
                         "ipAddress": "Any",
@@ -881,6 +1067,7 @@
                 "linuxFxVersion": "",
                 "requestTracingEnabled": false,
                 "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
                 "httpLoggingEnabled": false,
                 "logsDirectorySizeLimit": 35,
                 "detailedErrorLoggingEnabled": false,
@@ -937,6 +1124,7 @@
                     "microsoftAccountOAuthScopes": null
                 },
                 "localMySqlEnabled": false,
+                "managedServiceIdentityId": 6874,
                 "ipSecurityRestrictions": [
                     {
                         "ipAddress": "Any",
@@ -962,6 +1150,162 @@
                 "reservedInstanceCount": 0,
                 "fileChangeAuditEnabled": false,
                 "functionsRuntimeScaleMonitoringEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_gavlegoat_name'), '/1c03acd2102f4a26ab1ae4752789fae2')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-24T18:26:29.9309935Z",
+                "end_time": "2019-12-24T18:26:43.2683853Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_gavlegoatsocial_name'), '/3c9d53e500d6438b8e4909b50c6bd4eb')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_gavlegoatsocial_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-24T17:31:17.6724053Z",
+                "end_time": "2019-12-24T17:31:21.9067675Z",
+                "active": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_gavlegoatkeyvalutbackup_name'), '/436f5ebe93944d56838434a5c2d1a41a')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_gavlegoatkeyvalutbackup_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-24T18:31:38.7714397Z",
+                "end_time": "2019-12-24T18:31:54.2822352Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_gavlegoatsocial_name'), '/97f6322b5894483688842e44de9df4fa')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_gavlegoatsocial_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "VS Code",
+                "deployer": "Push-Deployer",
+                "message": "Created via a push deployment",
+                "start_time": "2019-12-24T18:23:59.2891121Z",
+                "end_time": "2019-12-24T18:24:04.2266221Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_gavlegoatkeyvalutbackup_name'), '/BackupKeyVault')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_gavlegoatkeyvalutbackup_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://gavlegoatkeyvalutbackup.azurewebsites.net/admin/vfs/site/wwwroot/BackupKeyVault/",
+                "script_href": "https://gavlegoatkeyvalutbackup.azurewebsites.net/admin/vfs/site/wwwroot/bin/keyvault-functions.dll",
+                "config_href": "https://gavlegoatkeyvalutbackup.azurewebsites.net/admin/vfs/site/wwwroot/BackupKeyVault/function.json",
+                "href": "https://gavlegoatkeyvalutbackup.azurewebsites.net/admin/functions/BackupKeyVault",
+                "config": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_gavlegoat_name'), '/QueueTriggerCSharp')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://gavlegoat.azurewebsites.net/admin/vfs/site/wwwroot/QueueTriggerCSharp/",
+                "script_href": "https://gavlegoat.azurewebsites.net/admin/vfs/site/wwwroot/bin/functions.dll",
+                "config_href": "https://gavlegoat.azurewebsites.net/admin/vfs/site/wwwroot/QueueTriggerCSharp/function.json",
+                "href": "https://gavlegoat.azurewebsites.net/admin/functions/QueueTriggerCSharp",
+                "config": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_gavlegoatkeyvalutbackup_name'), '/RestoreKeyVault')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_gavlegoatkeyvalutbackup_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://gavlegoatkeyvalutbackup.azurewebsites.net/admin/vfs/site/wwwroot/RestoreKeyVault/",
+                "script_href": "https://gavlegoatkeyvalutbackup.azurewebsites.net/admin/vfs/site/wwwroot/bin/keyvault-functions.dll",
+                "config_href": "https://gavlegoatkeyvalutbackup.azurewebsites.net/admin/vfs/site/wwwroot/RestoreKeyVault/function.json",
+                "href": "https://gavlegoatkeyvalutbackup.azurewebsites.net/admin/functions/RestoreKeyVault",
+                "config": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_gavlegoat_name'), '/TweetSentimentAnalyser')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://gavlegoat.azurewebsites.net/admin/vfs/site/wwwroot/TweetSentimentAnalyser/",
+                "script_href": "https://gavlegoat.azurewebsites.net/admin/vfs/site/wwwroot/bin/functions.dll",
+                "config_href": "https://gavlegoat.azurewebsites.net/admin/vfs/site/wwwroot/TweetSentimentAnalyser/function.json",
+                "href": "https://gavlegoat.azurewebsites.net/admin/functions/TweetSentimentAnalyser",
+                "config": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_gavlegoat_name'), '/TweetTranslator')]",
+            "location": "UK South",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://gavlegoat.azurewebsites.net/admin/vfs/site/wwwroot/TweetTranslator/",
+                "script_href": "https://gavlegoat.azurewebsites.net/admin/vfs/site/wwwroot/bin/functions.dll",
+                "config_href": "https://gavlegoat.azurewebsites.net/admin/vfs/site/wwwroot/TweetTranslator/function.json",
+                "href": "https://gavlegoat.azurewebsites.net/admin/functions/TweetTranslator",
+                "config": {}
             }
         },
         {
@@ -1001,6 +1345,176 @@
             "properties": {
                 "siteName": "gavlegoatsocial",
                 "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2019-08-01",
+            "name": "[concat(parameters('databaseAccounts_gavlegoat_name'), '/gavlebocken/leases')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_gavlegoat_name'), 'gavlebocken')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "leases",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*",
+                                "indexes": [
+                                    {
+                                        "kind": "Range",
+                                        "dataType": "Number",
+                                        "precision": -1
+                                    },
+                                    {
+                                        "kind": "Range",
+                                        "dataType": "String",
+                                        "precision": -1
+                                    }
+                                ]
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    }
+                },
+                "options": {}
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2019-08-01",
+            "name": "[concat(parameters('databaseAccounts_gavlegoat_name'), '/gavlebocken/tweets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_gavlegoat_name'), 'gavlebocken')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "tweets",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*"
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "partitionKey": {
+                        "paths": [
+                            "/username"
+                        ],
+                        "kind": "Hash"
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    }
+                },
+                "options": {}
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_gavlegoat_name')]",
+            "location": "uksouth",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', parameters('connections_documentdb_name'))]",
+                "[resourceId('Microsoft.Web/connections', parameters('connections_twitter_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_new_tweet_is_posted": {
+                            "recurrence": {
+                                "frequency": "Minute",
+                                "interval": 3
+                            },
+                            "splitOn": "@triggerBody()?['value']",
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['twitter']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/onnewtweet",
+                                "queries": {
+                                    "searchQuery": "#gävlebocken OR from:@Gavlebocken"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Create_or_update_document": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "id": "@{triggerBody()?['OriginalTweet']?['TweetId']}",
+                                    "sentTimestamp": "@{triggerBody()?['OriginalTweet']?['CreatedAtIso']}",
+                                    "text": "@{triggerBody()?['TweetText']}",
+                                    "username": "@{triggerBody()?['UserDetails']?['UserName']}"
+                                },
+                                "headers": {
+                                    "x-ms-documentdb-raw-partitionkey": "\"@{triggerBody()?['UserDetails']?['UserName']}\""
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['documentdb']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/dbs/@{encodeURIComponent('gavlebocken')}/colls/@{encodeURIComponent('tweets')}/docs"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "documentdb": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_documentdb_name'))]",
+                                "connectionName": "documentdb",
+                                "id": "/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/documentdb"
+                            },
+                            "twitter": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_twitter_name'))]",
+                                "connectionName": "twitter",
+                                "id": "/subscriptions/5f11eaf5-68e6-4e7a-b2ba-33f03b1724e8/providers/Microsoft.Web/locations/uksouth/managedApis/twitter"
+                            }
+                        }
+                    }
+                }
             }
         },
         {
@@ -1049,6 +1563,36 @@
             ],
             "properties": {
                 "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+            "apiVersion": "2019-08-01",
+            "name": "[concat(parameters('databaseAccounts_gavlegoat_name'), '/gavlebocken/leases/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_gavlegoat_name'), 'gavlebocken', 'leases')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_gavlegoat_name'), 'gavlebocken')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 400
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+            "apiVersion": "2019-08-01",
+            "name": "[concat(parameters('databaseAccounts_gavlegoat_name'), '/gavlebocken/tweets/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_gavlegoat_name'), 'gavlebocken', 'tweets')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_gavlegoat_name'), 'gavlebocken')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 400
+                }
             }
         }
     ]
