@@ -4,6 +4,8 @@ namespace Christmas.Sweden.Models
 {
     public class TweetModel : TableEntity
     {
+        public string TweetId { get; set; }
+
         public string OriginalText { get; set; }
 
         public string TranslatedText { get; set; }
@@ -18,12 +20,14 @@ namespace Christmas.Sweden.Models
 
         public double Sentiment { get; set; }
 
-        public string Url => $"https://twitter.com/{Username}/status/{Sentiment}";
+        public string Url => $"https://twitter.com/{Username}/status/{TweetId}";
 
         public TweetModel() { }
 
-        public TweetModel(string originalText, string translatedText, string originalLanguage, string translatedLanguage, string username, string sentTimestamp, double sentiment)
+        public TweetModel(string tweetId, string originalText, string translatedText, string originalLanguage, string translatedLanguage, string username, string sentTimestamp, double sentiment)
         {
+            TweetId = tweetId;
+
             OriginalText = originalText;
 
             TranslatedText = translatedText;
