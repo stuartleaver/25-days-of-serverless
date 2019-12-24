@@ -1,0 +1,26 @@
+﻿@model List<TweetModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="">
+    <h1 class="display-4">Welcome to the Gävle Goat Social Media Aggregator</h1>
+    @if (Model != null)
+        {
+            foreach (var tweet in Model)
+            {
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text">@tweet.TranslatedText</p>
+                                <p class="card-text">Sentiment = @tweet.Sentiment</p>
+                                <a href=@tweet.Url class="btn btn-default">View Tweet</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+</div>
