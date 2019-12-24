@@ -8,6 +8,9 @@
         "vaults_gavlegoat_name": {
             "value": null
         },
+        "workflows_gavlegoat_name": {
+            "value": null
+        },
         "sites_gavlegoatsocial_name": {
             "value": null
         },
@@ -32,13 +35,25 @@
         "components_gavlegoatsocial_name": {
             "value": null
         },
+        "databaseAccounts_gavlegoat_name": {
+            "value": null
+        },
         "components_gavlegoatkeyvalutbackup_name": {
             "value": null
         },
         "storageAccounts_gavlegoatkeyvalutbackup_name": {
             "value": null
         },
+        "accounts_gavlegoattextanalytics_name": {
+            "value": null
+        },
+        "accounts_gavlegoattexttranslator_name": {
+            "value": null
+        },
         "smartdetectoralertrules_failure_anomalies___gavlegoat_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___gavlegoatsocial_name": {
             "value": null
         },
         "smartdetectoralertrules_failure_anomalies___gavlegoatkeyvalutbackup_name": {

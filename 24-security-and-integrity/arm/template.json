@@ -10,6 +10,10 @@
             "defaultValue": "gavlegoat",
             "type": "String"
         },
+        "workflows_gavlegoat_name": {
+            "defaultValue": "gavlegoat",
+            "type": "String"
+        },
         "sites_gavlegoatsocial_name": {
             "defaultValue": "gavlegoatsocial",
             "type": "String"
@@ -42,6 +46,10 @@
             "defaultValue": "gavlegoatsocial",
             "type": "String"
         },
+        "databaseAccounts_gavlegoat_name": {
+            "defaultValue": "gavlegoat",
+            "type": "String"
+        },
         "components_gavlegoatkeyvalutbackup_name": {
             "defaultValue": "gavlegoatkeyvalutbackup",
             "type": "String"
@@ -50,8 +58,20 @@
             "defaultValue": "gavlegoatkeyvalutbackup",
             "type": "String"
         },
+        "accounts_gavlegoattextanalytics_name": {
+            "defaultValue": "gavlegoattextanalytics",
+            "type": "String"
+        },
+        "accounts_gavlegoattexttranslator_name": {
+            "defaultValue": "gavlegoattexttranslator",
+            "type": "String"
+        },
         "smartdetectoralertrules_failure_anomalies___gavlegoat_name": {
             "defaultValue": "failure anomalies - gavlegoat",
+            "type": "String"
+        },
+        "smartdetectoralertrules_failure_anomalies___gavlegoatsocial_name": {
+            "defaultValue": "failure anomalies - gavlegoatsocial",
             "type": "String"
         },
         "smartdetectoralertrules_failure_anomalies___gavlegoatkeyvalutbackup_name": {
@@ -65,6 +85,65 @@
     },
     "variables": {},
     "resources": [
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2017-04-18",
+            "name": "[parameters('accounts_gavlegoattextanalytics_name')]",
+            "location": "uksouth",
+            "sku": {
+                "name": "F0"
+            },
+            "kind": "TextAnalytics",
+            "properties": {
+                "customSubDomainName": "[parameters('accounts_gavlegoattextanalytics_name')]"
+            }
+        },
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2017-04-18",
+            "name": "[parameters('accounts_gavlegoattexttranslator_name')]",
+            "location": "global",
+            "sku": {
+                "name": "F0"
+            },
+            "kind": "TextTranslation",
+            "properties": {
+                "customSubDomainName": "[parameters('accounts_gavlegoattexttranslator_name')]"
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2019-08-01",
+            "name": "[parameters('databaseAccounts_gavlegoat_name')]",
+            "location": "UK South",
+            "tags": {
+                "defaultExperience": "Core (SQL)",
+                "hidden-cosmos-mmspecial": ""
+            },
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "disableKeyBasedMetadataWriteAccess": false,
+                "databaseAccountOfferType": "Standard",
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
+                },
+                "locations": [
+                    {
+                        "locationName": "UK South",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "capabilities": []
+            }
+        },
         {
             "type": "microsoft.insights/components",
             "apiVersion": "2015-05-01",
@@ -157,6 +236,24 @@
                 "enabledForDeployment": false,
                 "enabledForDiskEncryption": false,
                 "enabledForTemplateDeployment": false
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_gavlegoat_name')]",
+            "location": "uksouth",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "triggers": {},
+                    "actions": {},
+                    "outputs": {}
+                },
+                "parameters": {}
             }
         },
         {
@@ -337,6 +434,32 @@
                 },
                 "scope": [
                     "[resourceId('microsoft.insights/components', parameters('components_gavlegoatkeyvalutbackup_name'))]"
+                ],
+                "actionGroups": {
+                    "groupIds": [
+                        "[parameters('actiongroups_application_20insights_20smart_20detection_externalid')]"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+            "apiVersion": "2019-06-01",
+            "name": "[parameters('smartdetectoralertrules_failure_anomalies___gavlegoatsocial_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_gavlegoatsocial_name'))]"
+            ],
+            "properties": {
+                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+                "state": "Enabled",
+                "severity": "Sev3",
+                "frequency": "PT1M",
+                "detector": {
+                    "id": "FailureAnomaliesDetector"
+                },
+                "scope": [
+                    "[resourceId('microsoft.insights/components', parameters('components_gavlegoatsocial_name'))]"
                 ],
                 "actionGroups": {
                     "groupIds": [
@@ -878,6 +1001,54 @@
             "properties": {
                 "siteName": "gavlegoatsocial",
                 "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_gavlegoat_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_gavlegoat_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_gavlegoatkeyvalutbackup_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_gavlegoatkeyvalutbackup_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_gavlegoatkeyvalutbackup_name'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_gavlegoat_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_gavlegoat_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_gavlegoat_name'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-04-01",
+            "name": "[concat(parameters('storageAccounts_gavlegoatkeyvalutbackup_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_gavlegoatkeyvalutbackup_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_gavlegoatkeyvalutbackup_name'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
             }
         }
     ]
