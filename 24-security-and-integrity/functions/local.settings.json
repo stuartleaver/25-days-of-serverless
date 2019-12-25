@@ -1,9 +1,9 @@
 {
     "IsEncrypted": false,
     "Values": {
-        "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=gavlegoat;AccountKey=yCNwLugihwG5t3S9xvhjw+joRU/r6ykUop57JBJdTRt56u1F8DR0QX7dk93egDex9Jh2DrWHR8nVq9X35J4GQg==;EndpointSuffix=core.windows.net",
-        "CosmosDbConnectionString": "AccountEndpoint=https://gavlegoat.documents.azure.com:443/;AccountKey=1XrWUphjrwe29ubixlIKhxMbWvnfRJjJw3zu8zp04WJPUTIIRQKlYgbU6DovrCifzzoPYxZZ8mo7g9YqcXJZ8Q==;",
+        "AzureWebJobsStorage": "{AzureWebJobsStorage}",
+        "CosmosDbConnectionString": "{AzureWebJobsStorage}",
         "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-        "KEY_VAULT_ENDPOINT": "https://gavlegoat.vault.azure.net/"
+        "KEY_VAULT_ENDPOINT": "{KEY_VAULT_ENDPOINT}"
     }
 }
